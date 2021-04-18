@@ -14,4 +14,4 @@ class KanyeProvider(DataProvider):
         r = self.http.request("GET", self.KANYE_REST_URL)
         quote = json.loads(r.data.decode("utf-8"))
 
-        return quote["quote"]
+        return quote["quote"] + " - Kanye West"

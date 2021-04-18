@@ -23,18 +23,23 @@ class QuoteProvider(DataProvider):
         return message
 
     def process_quote(self, quote):
-        quote_data = quote["Global Quote"]
-        symbol = quote_data["01. symbol"]
-        price = float(quote_data["05. price"])
-        change = float(quote_data["09. change"])
-        change_pct = round(float(quote_data["10. change percent"][0:-1]), 2)
+        try:
+            quote_data = quote["Global Quote"]
+            symbol = quote_data["01. symbol"]
+            price = float(quote_data["05. price"])
+            change = float(quote_data["09. change"])
+            change_pct = round(float(quote_data["10. change percent"][0:-1]), 2)
 
-        change_str = "%1E" + str(change) if change > 0 else "%1F" + str(abs(change))
-        change_pct_str = (
-            "%1E" + str(change_pct) if change_pct > 0 else "%1F" + str(abs(change_pct))
-        )
+            change_str = "%1E" + str(change) if change > 0 else "%1F" + str(abs(change))
+            change_pct_str = (
+                "%1E" + str(change_pct)
+                if change_pct > 0
+                else "%1F" + str(abs(change_pct))
+            )
 
-        return f"{symbol} {price} {change_str} {change_pct_str}%25"
+            return f"{symbol} {price} {change_str} {change_pct_str}%25"
+        except:
+            return ""
 
     def requestAlphaVantage(self, stock: str) -> str:
         stock_api_url = self.ALPHA_VANTAGE_STOCK_URL % (stock,)

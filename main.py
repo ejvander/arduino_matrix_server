@@ -1,12 +1,14 @@
 from typing import List
 
 import urllib3
+import urllib
 import time
 
 from data_providers.KanyeProvider import KanyeProvider
 from data_providers.QuoteProvider import QuoteProvider
 from data_providers.MessageProvider import MessageProvider
 from data_providers.DataProvider import DataProvider
+from data_providers.NewsProvider import NewsProvider
 from config import SCREEN_URL
 
 if __name__ == "__main__":
@@ -15,6 +17,7 @@ if __name__ == "__main__":
     http = urllib3.PoolManager()
 
     data_providers: List[DataProvider] = [
+        NewsProvider(http),
         KanyeProvider(http),
         QuoteProvider(http),
         MessageProvider(),
@@ -27,4 +30,6 @@ if __name__ == "__main__":
         idx = (idx + 1) % len(data_providers)
 
         http.request("GET", SCREEN_URL % (message,))
-        time.sleep(len(message) / 2)
+
+        message_len = len(urllib.parse.unquote(message))
+        time.sleep(4 + (message_len * 4) / 10)
