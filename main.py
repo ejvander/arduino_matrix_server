@@ -1,8 +1,6 @@
 from typing import List
 
 import urllib3
-import urllib
-import json
 import time
 
 from data_providers.KanyeProvider import KanyeProvider
